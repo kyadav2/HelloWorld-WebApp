@@ -20,8 +20,9 @@ phases:
     commands:
       - echo started on `date`
       - cd src
+      - mkdir out
       - echo restoring packages...
-      - dotnet restore
+      - dotnet restore --verbosity detailed > out/error.txt
       - echo building solution...
       - dotnet build
       - echo running unit tests...
@@ -29,4 +30,5 @@ phases:
       - echo deploy to ECR...
 artifacts:
   files:
-    - ./src/UnitTests/TestResults/*
+#    - ./src/UnitTests/TestResults/*
+     - ./src/out/*
