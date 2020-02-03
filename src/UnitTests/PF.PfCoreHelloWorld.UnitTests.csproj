@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <Authors>Practice Fusion</Authors>
+    <Version>1.0.0</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentAssertions" Version="5.10.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.4.0" />
+    <PackageReference Include="Moq" Version="4.13.1" />
+    <PackageReference Include="MSTest.TestAdapter" Version="2.0.0" />
+    <PackageReference Include="MSTest.TestFramework" Version="2.0.0" />
+    <PackageReference Include="PF.Core" Version="0.1.0-alpha-0078-develop-12f243f" />
+    <PackageReference Include="PF.Core.AspNetCore" Version="0.1.0-alpha-0078-develop-12f243f" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Host\PF.PfCoreHelloWorld.csproj" />
+  </ItemGroup>
+
+</Project>
