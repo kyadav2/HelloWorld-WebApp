@@ -21,7 +21,8 @@ phases:
       - echo started on `date`
       - cd src
       - mkdir out
-      - bash ./host/nuget-setup.sh
+      - chmod +x ./host/nuget-setup.sh
+      - ./host/nuget-setup.sh
       - echo restoring packages...
 #      - dotnet restore -nowarn:msb3202,nu1503
 #      - dotnet restore --verbosity detailed > out/error.txt
