@@ -25,9 +25,8 @@ phases:
       - echo building solution...
       - dotnet build
       - echo running unit tests...
-      - dotnet test
-      - echo publishing...
-      - dotnet publish -c Release -o build_output
+      - dotnet test --logger trx
+      - echo deploy to ECR
 artifacts:
   files:
-    - ./build_output/*
+    - ./src/UnitTests/TestResults/*
