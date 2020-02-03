@@ -1,0 +1,33 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      dotnet: 3.0
+      docker: 18
+  pre_build:
+    commands:
+      - echo installing .net core sdk 3.1
+# ubuntu 18.04 image
+      - wget -q https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+      - dpkg -i packages-microsoft-prod.deb
+      - add-apt-repository universe
+      - apt-get update
+      - apt-get install apt-transport-https
+      - apt-get update
+      - apt-get install -y dotnet-sdk-3.1
+  build:
+    commands:
+      - echo started on `date`
+      - cd src
+      - echo restoring packages...
+      - dotnet restore
+      - echo building solution...
+      - dotnet build
+      - echo running unit tests...
+      - dotnet test
+      - echo publishing...
+      - dotnet publish -c Release -o build_output
+artifacts:
+  files:
+    - ./build_output/*
