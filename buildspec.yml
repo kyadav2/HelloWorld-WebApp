@@ -22,7 +22,8 @@ phases:
       - cd src
       - mkdir out
       - echo restoring packages...
-      - dotnet restore --verbosity detailed > out/error.txt
+      - dotnet restore -p:RestoreUseSkipNonexistentTargets=false -nowarn:msb3202,nu1503
+#      - dotnet restore --verbosity detailed > out/error.txt
       - echo building solution...
       - dotnet build
       - echo running unit tests...
