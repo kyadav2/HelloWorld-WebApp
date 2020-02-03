@@ -20,20 +20,13 @@ phases:
     commands:
       - echo started on `date`
       - cd src
-      - mkdir out
-#      - chmod +x ./host/nuget-setup.sh
-#      - ./host/nuget-setup.sh
       - echo restoring packages...
-#      - cp ./src/NuGet.Config ~/.nuget/NuGet/
       - dotnet restore
-#      - dotnet restore --verbosity detailed > out/error.txt
       - echo building solution...
-#      - dotnet build PfCoreHelloWorld.sln --runtime ubuntu.18.04-x64 > ./out/error.txt
       - dotnet build
       - echo running unit tests...
       - dotnet test --logger trx
       - echo deploy to ECR...
 artifacts:
   files:
-#    - ./src/UnitTests/TestResults/*
-     - ./src/out/*
+    - ./src/UnitTests/TestResults/*
