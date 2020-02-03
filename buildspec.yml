@@ -26,7 +26,7 @@ phases:
       - dotnet build
       - echo running unit tests...
       - dotnet test --logger trx
-      - echo deploy to ECR
+      - echo deploy to ECR...
 artifacts:
   files:
     - ./src/UnitTests/TestResults/*
