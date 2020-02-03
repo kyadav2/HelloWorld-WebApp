@@ -28,7 +28,8 @@ phases:
       - dotnet restore
 #      - dotnet restore --verbosity detailed > out/error.txt
       - echo building solution...
-      - dotnet build PfCoreHelloWorld.sln --runtime ubuntu.18.04-x64 > ./out/error.txt
+#      - dotnet build PfCoreHelloWorld.sln --runtime ubuntu.18.04-x64 > ./out/error.txt
+       - dotnet build
       - echo running unit tests...
       - dotnet test --logger trx
       - echo deploy to ECR...
