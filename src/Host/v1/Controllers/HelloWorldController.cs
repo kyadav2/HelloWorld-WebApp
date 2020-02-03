@@ -2,7 +2,7 @@
 
 namespace PF.PfCoreHelloWorld.v1.Controllers
 {
-    [Route("api/v{version:apiVersion}/[controller]")]
+    [Route("HelloWorld")]
     [ApiController]
     public class HelloWorldController : ControllerBase
     {
