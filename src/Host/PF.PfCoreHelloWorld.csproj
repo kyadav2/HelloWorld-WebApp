@@ -9,8 +9,10 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.5" />
+    <!--
     <PackageReference Include="PF.Core" Version="0.1.0-alpha-0078-develop-12f243f" />
     <PackageReference Include="PF.Core.AspNetCore" Version="0.1.0-alpha-0078-develop-12f243f" />
+-->
   </ItemGroup>
 
 </Project>
