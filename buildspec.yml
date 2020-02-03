@@ -24,7 +24,7 @@ phases:
 #      - chmod +x ./host/nuget-setup.sh
 #      - ./host/nuget-setup.sh
       - echo restoring packages...
-      - cp ./src/NuGet.Config ~/.nuget/NuGet/NuGet.Config
+      - cp ./src/NuGet.Config ~/.nuget/NuGet/
       - dotnet restore -nowarn:msb3202,nu1503
 #      - dotnet restore --verbosity detailed > out/error.txt
       - echo building solution...
