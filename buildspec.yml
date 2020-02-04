@@ -1,5 +1,7 @@
 version: 0.2
-
+env:
+  variables:
+    IMAGE_TAG: "pf-fabric-dev-poc-helloworld:v1"
 phases:
   install:
     runtime-versions:
@@ -7,7 +9,9 @@ phases:
       docker: 18
   pre_build:
     commands:
-      - echo installing .net core sdk 3.1
+      - echo Logging in to Amazon ECR...
+      - $(aws ecr get-login --region $ECR_REGION)
+      - echo Installing .net core sdk 3.1
 # ubuntu 18.04 image
       - wget -q https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
       - dpkg -i packages-microsoft-prod.deb
@@ -18,17 +22,23 @@ phases:
       - apt-get install -y dotnet-sdk-3.1
   build:
     commands:
-      - echo started on `date`
+      - echo Build Started on `date`
       - cd src
-      - echo restoring packages...
+      - echo Restoring packages...
       - dotnet restore
-      - echo building solution...
+      - echo Building solution...
       - dotnet build --no-restore
-      - echo running unit tests...
+      - echo Running unit tests...
       - dotnet test --no-build --verbosity:normal /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=opencover /p:threshold=80
-      - echo deploy to ECR...
-      - cd Host
-      - 
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Building the Docker image...
+      - cd src/Host
+      - docker build -t $IMAGE_TAG
+      - echo Pushing the Docker image...
+      - docker push $DOCKER_IMAGE
+      - echo Done building the Docker image...
 artifacts:
   files:
     - ./src/UnitTests/TestResults/*
