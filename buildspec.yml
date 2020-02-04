@@ -27,7 +27,7 @@ phases:
       - echo running unit tests...
       - dotnet test --no-build --verbosity:normal /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=opencover /p:threshold=80
       - echo deploy to ECR...
-      - cd host
+      - cd Host
       - 
 artifacts:
   files:
