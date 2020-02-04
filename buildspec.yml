@@ -31,7 +31,7 @@ phases:
       - echo Running unit tests...
       - dotnet test --no-build --verbosity:normal /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=opencover /p:threshold=80
       - echo Build completed on `date`
-      - which docker > ./src/UnitTests/TestResults/log.txt
+      - which docker > ./UnitTests/TestResults/log.txt
 #      - echo Building the Docker image...
 #      - cd Host
 #      - docker build -t helloworld:latest -t helloworld:v1 .
