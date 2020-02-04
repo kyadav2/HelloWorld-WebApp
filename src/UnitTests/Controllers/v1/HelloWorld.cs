@@ -21,7 +21,7 @@ namespace PF.PfCoreHelloWorld.UnitTests.Controllers.v1
 
             //Assert
             response.StatusCode.Should().Be(StatusCodes.Status200OK);
-            response.Value.Should().Be("Hello World!");
+            response.Value.Should().Be("Hello World from Kishor");
         }
     }
 }
