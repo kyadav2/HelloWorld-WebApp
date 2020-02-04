@@ -7,7 +7,7 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS publish
 WORKDIR /src
 COPY . .
-RUN . ./nuget-setup.sh
+#RUN . ./nuget-setup.sh
 RUN dotnet publish -c Release -o /app/publish
 
 FROM base AS final
