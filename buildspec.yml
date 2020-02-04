@@ -38,7 +38,8 @@ phases:
       - echo Build completed on `date`
       - echo Building the Docker image...
       - cd Host
-      - docker build -t $DOCKER_IMAGE_LATEST -t $DOCKER_IMAGE_VERSION .
+      - docker build -t $DOCKER_USERNAME/$DOCKER_IMAGE_LATEST .
+#      - docker build -t $DOCKER_IMAGE_LATEST -t $DOCKER_IMAGE_VERSION .
       - echo Done building the Docker image
       - echo Pushing the Docker image...
       - docker push $DOCKER_USERNAME/$DOCKER_IMAGE_LATEST
