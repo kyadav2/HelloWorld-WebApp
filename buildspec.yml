@@ -34,7 +34,8 @@ phases:
     commands:
       - echo Build completed on `date`
       - echo Building the Docker image...
-      - cd src/Host
+      - cd src
+      - cd Host
       - docker build -t $IMAGE_TAG
       - echo Done building the Docker image... > ./src/UnitTests/TestResults/log.txt
       - echo Pushing the Docker image...
