@@ -23,10 +23,12 @@ phases:
       - echo restoring packages...
       - dotnet restore
       - echo building solution...
-      - dotnet build
+      - dotnet build --no-restore
       - echo running unit tests...
-      - dotnet test --logger trx
+      - dotnet test --no-build --verbosity:normal /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=opencover /p:threshold=80
       - echo deploy to ECR...
+      - cd host
+      - 
 artifacts:
   files:
     - ./src/UnitTests/TestResults/*
