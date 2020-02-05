@@ -23,20 +23,18 @@ phases:
       - apt-get install -y dotnet-sdk-3.1
   build:
     commands:
-      - echo Build Started on `date`
+      - echo Build started...
       - cd src
       - dotnet restore
       - dotnet build --no-restore
       - dotnet test --no-build --verbosity:normal /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=opencover /p:threshold=80
-      - echo Build completed on `date`
       - echo Building the Docker image...
       - cd Host
       - docker build -t $DOCKER_IMAGE .
       - docker tag $DOCKER_IMAGE $ECR_REPOSITORY/$DOCKER_IMAGE
-      - echo Done building the Docker image
       - echo Pushing the Docker image...
       - docker push $ECR_REPOSITORY/$DOCKER_IMAGE
-      - echo Done pushing the Docker image...
+      - echo Done
 artifacts:
   files:
     - ./src/UnitTests/TestResults/*
