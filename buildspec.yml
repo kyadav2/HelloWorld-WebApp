@@ -13,9 +13,8 @@ phases:
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
-      - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD docker.io
-#      - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
-#      - $(aws ecr get-login --region $AWS_REGION)
+#      - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD docker.io
+      - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
       - echo Installing .net core sdk 3.1
 # ubuntu 18.04 image
       - wget -q https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
@@ -38,15 +37,14 @@ phases:
       - echo Build completed on `date`
       - echo Building the Docker image...
       - cd Host
-      - docker build -t $DOCKER_IMAGE_LATEST .
-#      - docker tag $DOCKER_IMAGE_LATEST $DOCKER_USERNAME/$DOCKER_IMAGE_LATEST
-      - docker tag $DOCKER_IMAGE_LATEST  kishoryadav/pf-fabric-dev-poc-helloworld:latest
-#      - docker build -t $DOCKER_IMAGE_LATEST -t $DOCKER_IMAGE_VERSION .
+      - docker build -t $DOCKER_IMAGE_LATEST -t $DOCKER_IMAGE_VERSION .
+#      - docker tag $DOCKER_IMAGE_LATEST  kishoryadav/pf-fabric-dev-poc-helloworld:latest
+      - docker tag $DOCKER_IMAGE_LATEST  072100331905.dkr.ecr.us-west-2.amazonaws.com/pf-fabric-dev-poc-helloworld:latest
       - echo Done building the Docker image
       - echo Pushing the Docker image...
-#      - docker push $DOCKER_USERNAME/$DOCKER_IMAGE_LATEST
-      - docker push kishoryadav/pf-fabric-dev-poc-helloworld:latest
-#      - echo Done pushing the Docker image...
+      - docker push 072100331905.dkr.ecr.us-west-2.amazonaws.com/pf-fabric-dev-poc-helloworld:latest
+#      - docker push kishoryadav/pf-fabric-dev-poc-helloworld:latest
+      - echo Done pushing the Docker image...
 artifacts:
   files:
     - ./src/UnitTests/TestResults/*
