@@ -21,12 +21,14 @@ phases:
       - apt-get install apt-transport-https
       - apt-get update
       - apt-get install -y dotnet-sdk-3.1
+      - dotnet tool install --global dotnet-sonarscanner --version 4.8.0
   build:
     commands:
       - echo Build started...
       - cd src
       - dotnet restore
       - dotnet build --no-restore
+      - dotnet add UnitTests package coverlet.msbuild
       - dotnet test --no-build --logger trx --verbosity:normal /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=opencover /p:threshold=80
       - echo Building the Docker image...
       - cd Host
