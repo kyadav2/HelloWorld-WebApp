@@ -27,7 +27,7 @@ phases:
       - cd src
       - dotnet restore
       - dotnet build --no-restore
-      - dotnet test --no-build --verbosity:normal /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=opencover /p:threshold=80
+      - dotnet test --no-build --logger trx --verbosity:normal /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=opencover /p:threshold=80
       - echo Building the Docker image...
       - cd Host
       - docker build -t $DOCKER_IMAGE .
