@@ -11,6 +11,7 @@ phases:
     commands:
       - echo Logging in to Amazon ECR...
       - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
+
       - echo Installing .net core sdk 3.1 on Ubuntu 18.04
       - wget -q https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
       - dpkg -i packages-microsoft-prod.deb
@@ -19,6 +20,7 @@ phases:
       - apt-get install apt-transport-https
       - apt-get update
       - apt-get install -y dotnet-sdk-3.1
+
       - echo Installing sonar scanner tool for code coverage
       - dotnet tool install --global dotnet-sonarscanner --version 4.8.0
   build:
@@ -28,14 +30,17 @@ phases:
       - chmod +x ./Host/nuget-setup.sh
       - ./Host/nuget-setup.sh
       - dotnet build
+
       - echo Running unit tests...
       - dotnet add UnitTests package coverlet.msbuild
       - dotnet test --no-build --logger trx --verbosity:normal /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=opencover /p:threshold=80
+
       - echo Building the Docker image...
       - cd Host
       - ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPOSITORY_NAME
       - IMAGE_TAG="${REPOSITORY_NAME}_${BRANCH_NAME}_${BASE_VERSION}_${CODEBUILD_BUILD_NUMBER}_${COMMIT_ID}"
       - docker build -t $ECR_REPOSITORY:$IMAGE_TAG .
+
       - echo Pushing the Docker image...
       - docker push $ECR_REPOSITORY:$IMAGE_TAG
       - echo Done
