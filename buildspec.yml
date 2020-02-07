@@ -12,6 +12,15 @@ phases:
     commands:
       - echo Logging in to Amazon ECR...
       - echo $CODEBUILD_RESOLVED_SOURCE_VERSION
+      - echo $CODEBUILD_BUILD_ID
+      - echo $CODEBUILD_BUILD_NUMBER
+      - echo $CODEBUILD_SOURCE_REPO_URL
+      - echo $CODEBUILD_SOURCE_VERSION
+      - echo $CODEBUILD_WEBHOOK_ACTOR_ACCOUNT_ID
+      - echo $CODEBUILD_WEBHOOK_BASE_REF
+      - echo $CODEBUILD_WEBHOOK_PREV_COMMIT
+      - echo $CODEBUILD_WEBHOOK_HEAD_REF
+      - echo $CODEBUILD_WEBHOOK_TRIGGER
       - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
       - echo Installing .net core sdk 3.1
 # ubuntu 18.04 image
