@@ -34,12 +34,11 @@ phases:
       - dotnet test --no-build --logger trx --verbosity:normal /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=opencover /p:threshold=80
       - echo Building the Docker image...
       - cd Host
-      - DOCKER_IMAGE = $REPOSITORY_NAME_$BRANCH_NAME_$BASE_VERSION_$CODEBUILD_BUILD_NUMBER_$(COMMIT_ID:0:11)
-      - echo $DOCKER_IMAGE
-      - docker build -t $DOCKER_IMAGE .
-      - docker tag $DOCKER_IMAGE $ECR_REPOSITORY/$DOCKER_IMAGE
+      - echo "$REPOSITORY_NAME_$BRANCH_NAME_$BASE_VERSION_$CODEBUILD_BUILD_NUMBER_$(COMMIT_ID:0:11)"
+      - docker build -t $REPOSITORY_NAME_$BRANCH_NAME_$BASE_VERSION_$CODEBUILD_BUILD_NUMBER_$(COMMIT_ID:0:11) .
+      - docker tag $REPOSITORY_NAME_$BRANCH_NAME_$BASE_VERSION_$CODEBUILD_BUILD_NUMBER_$(COMMIT_ID:0:11) $ECR_REPOSITORY/$REPOSITORY_NAME_$BRANCH_NAME_$BASE_VERSION_$CODEBUILD_BUILD_NUMBER_$(COMMIT_ID:0:11)
       - echo Pushing the Docker image...
-      - docker push $ECR_REPOSITORY/$DOCKER_IMAGE
+      - docker push $ECR_REPOSITORY/$REPOSITORY_NAME_$BRANCH_NAME_$BASE_VERSION_$CODEBUILD_BUILD_NUMBER_$(COMMIT_ID:0:11)
       - echo Done
 artifacts:
   files:
