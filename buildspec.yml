@@ -1,8 +1,8 @@
 version: 0.2
 env:
   variables:
-    DOCKER_IMAGE: "pf-fabric-dev-poc-helloworld:latest"
-    ECR_REPOSITORY: "072100331905.dkr.ecr.us-west-2.amazonaws.com"
+    ECR_REPOSITORY: "072100331905.dkr.ecr.us-west-2.amazonaws.com/pf-fabric-dev-poc-helloworld"
+    BASE_VERSION: "0.1.0"
 phases:
   install:
     runtime-versions:
@@ -11,12 +11,6 @@ phases:
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
-      - echo $CODEBUILD_RESOLVED_SOURCE_VERSION
-      - echo $CODEBUILD_BUILD_ID
-      - echo $CODEBUILD_BUILD_NUMBER
-      - echo $COMMIT_ID
-      - echo $BRANCH_NAME
-      - echo $REPOSITORY_NAME
       - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
       - echo Installing .net core sdk 3.1
 # ubuntu 18.04 image
@@ -40,6 +34,8 @@ phases:
       - dotnet test --no-build --logger trx --verbosity:normal /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=opencover /p:threshold=80
       - echo Building the Docker image...
       - cd Host
+      - DOCKER_IMAGE = $REPOSITORY_NAME_$BRANCH_NAME_$BASE_VERSION_$CODEBUILD_BUILD_NUMBER_$(COMMIT_ID:0:11)
+      - echo $DOCKER_IMAGE
       - docker build -t $DOCKER_IMAGE .
       - docker tag $DOCKER_IMAGE $ECR_REPOSITORY/$DOCKER_IMAGE
       - echo Pushing the Docker image...
