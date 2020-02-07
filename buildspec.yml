@@ -11,6 +11,8 @@ phases:
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
+      - DOCKER_IMAGE = "$REPOSITORY_NAME_$BRANCH_NAME"
+      - echo $DOCKER_IMAGE
       - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
       - echo Installing .net core sdk 3.1
 # ubuntu 18.04 image
@@ -34,7 +36,7 @@ phases:
       - dotnet test --no-build --logger trx --verbosity:normal /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=opencover /p:threshold=80
       - echo Building the Docker image...
       - cd Host
-      - echo "$REPOSITORY_NAME_$BRANCH_NAME_$BASE_VERSION_$CODEBUILD_BUILD_NUMBER_$(COMMIT_ID:0:11)"
+      - echo "$REPOSITORY_NAME_$BRANCH_NAME_$BASE_VERSION_$CODEBUILD_BUILD_NUMBER_${COMMIT_ID:0:11}"
       - docker build -t $REPOSITORY_NAME_$BRANCH_NAME_$BASE_VERSION_$CODEBUILD_BUILD_NUMBER_${COMMIT_ID:0:11} .
       - docker tag $REPOSITORY_NAME_$BRANCH_NAME_$BASE_VERSION_$CODEBUILD_BUILD_NUMBER_${COMMIT_ID:0:11} $ECR_REPOSITORY/$REPOSITORY_NAME_$BRANCH_NAME_$BASE_VERSION_$CODEBUILD_BUILD_NUMBER_${COMMIT_ID:0:11}
       - echo Pushing the Docker image...
