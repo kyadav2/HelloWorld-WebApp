@@ -11,9 +11,8 @@ phases:
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
-#      - DOCKER_IMAGE="${REPOSITORY_NAME}_${BRANCH_NAME}_${BASE_VERSION}_${CODEBUILD_BUILD_NUMBER}_${COMMIT_ID:0:11}"
-      - DOCKER_IMAGE_TAG="${BRANCH_NAME}_${BASE_VERSION}_${CODEBUILD_BUILD_NUMBER}_${COMMIT_ID}"
-      - echo $DOCKER_IMAGE_TAG
+      - echo $AWS_ACCOUNT_ID
+      - DOCKER_IMAGE_TAG="${REPOSITORY_NAME}_${BRANCH_NAME}_${BASE_VERSION}_${CODEBUILD_BUILD_NUMBER}_${COMMIT_ID:0:11}"
       - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
       - echo Installing .net core sdk 3.1
 # ubuntu 18.04 image
