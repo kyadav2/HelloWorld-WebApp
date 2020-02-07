@@ -34,10 +34,10 @@ phases:
       - echo Building the Docker image...
       - cd Host
       - ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPOSITORY_NAME
-      - DOCKER_IMAGE_TAG=$REPOSITORY_NAME_$BRANCH_NAME_$BASE_VERSION_$CODEBUILD_BUILD_NUMBER_$COMMIT_ID
-      - docker build -t $ECR_REPOSITORY:$DOCKER_IMAGE_TAG .
+      - IMAGE_TAG="${REPOSITORY_NAME}_${BRANCH_NAME}_${BASE_VERSION}_${CODEBUILD_BUILD_NUMBER}_${COMMIT_ID}"
+      - docker build -t $ECR_REPOSITORY:$IMAGE_TAG .
       - echo Pushing the Docker image...
-      - docker push $ECR_REPOSITORY:$DOCKER_IMAGE_TAG
+      - docker push $ECR_REPOSITORY:$IMAGE_TAG
       - echo Done
 artifacts:
   files:
