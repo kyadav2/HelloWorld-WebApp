@@ -1,8 +1,9 @@
 version: 0.2
 env:
   variables:
-    ECR_REPOSITORY: "072100331905.dkr.ecr.us-west-2.amazonaws.com/pf-fabric-dev-poc-helloworld"
+    ECR_REPOSITORY: $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPOSITORY_NAME"
     BASE_VERSION: "0.1.0"
+    DOCKER_IMAGE_TAG: $REPOSITORY_NAME_$BRANCH_NAME_$BASE_VERSION_$CODEBUILD_BUILD_NUMBER_$COMMIT_ID
 phases:
   install:
     runtime-versions:
@@ -11,8 +12,6 @@ phases:
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
-      - echo $AWS_ACCOUNT_ID
-      - DOCKER_IMAGE_TAG="${REPOSITORY_NAME}_${BRANCH_NAME}_${BASE_VERSION}_${CODEBUILD_BUILD_NUMBER}_${COMMIT_ID}"
       - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
       - echo Installing .net core sdk 3.1
 # ubuntu 18.04 image
