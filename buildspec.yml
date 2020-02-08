@@ -10,8 +10,6 @@ phases:
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
-      - echo $COMMIT_ID
-      - printf "%.11s" $COMMIT_ID
       - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
 
       - echo Installing .net core sdk 3.1 on Ubuntu 18.04
@@ -27,6 +25,10 @@ phases:
       - dotnet tool install --global dotnet-sonarscanner --version 4.8.0
   build:
     commands:
+      - echo experiment
+      - echo $COMMIT_ID
+      - printf "%.11s" $COMMIT_ID
+
       - echo Build started...
       - cd src
       - chmod +x ./Host/nuget-setup.sh
