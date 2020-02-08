@@ -28,6 +28,8 @@ phases:
       - echo experiment
       - echo $COMMIT_ID
       - printf "%.11s" $COMMIT_ID
+      - COMMIT_SHORT_HASH=$(printf "%.11s" $COMMIT_ID)
+      - echo $COMMIT_SHORT_HASH
 
       - echo Build started...
       - cd src
