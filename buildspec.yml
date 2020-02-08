@@ -10,6 +10,8 @@ phases:
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
+      - echo $COMMIT_ID
+      - printf "%.11s" $COMMIT_ID
       - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
 
       - echo Installing .net core sdk 3.1 on Ubuntu 18.04
@@ -38,14 +40,11 @@ phases:
       - echo Building the Docker image...
       - cd Host
       - ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPOSITORY_NAME
-#      - IMAGE_TAG="${REPOSITORY_NAME}_${BRANCH_NAME}_${BASE_VERSION}_${CODEBUILD_BUILD_NUMBER}_${COMMIT_ID}"
-      - IMAGE_TAG="helloworld-webapp_${BRANCH_NAME}_${BASE_VERSION}_${CODEBUILD_BUILD_NUMBER}_${COMMIT_ID}"
-#      - docker build -t $ECR_REPOSITORY:$IMAGE_TAG .
-      - docker build -t $ECR_REPOSITORY/$IMAGE_TAG .
+      - IMAGE_TAG="${REPOSITORY_NAME}_${BRANCH_NAME}_${BASE_VERSION}_${CODEBUILD_BUILD_NUMBER}_${COMMIT_ID}"
+      - docker build -t $ECR_REPOSITORY:$IMAGE_TAG .
 
       - echo Pushing the Docker image...
-#      - docker push $ECR_REPOSITORY:$IMAGE_TAG
-      - docker push $ECR_REPOSITORY/$IMAGE_TAG
+      - docker push $ECR_REPOSITORY:$IMAGE_TAG
       - echo Done
 artifacts:
   files:
