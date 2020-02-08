@@ -3,10 +3,6 @@ env:
   variables:
     BASE_VERSION: "0.1.0"
 phases:
-  install:
-    runtime-versions:
-      dotnet: 3.0
-      docker: 18
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
