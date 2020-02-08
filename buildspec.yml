@@ -25,12 +25,6 @@ phases:
       - dotnet tool install --global dotnet-sonarscanner --version 4.8.0
   build:
     commands:
-      - echo experiment
-      - echo $COMMIT_ID
-      - printf "%.11s" $COMMIT_ID
-      - COMMIT_SHORT_HASH=$(printf "%.11s" $COMMIT_ID)
-      - echo $COMMIT_SHORT_HASH
-
       - echo Build started...
       - cd src
       - chmod +x ./Host/nuget-setup.sh
@@ -44,7 +38,8 @@ phases:
       - echo Building the Docker image...
       - cd Host
       - ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPOSITORY_NAME
-      - IMAGE_TAG="${REPOSITORY_NAME}_${BRANCH_NAME}_${BASE_VERSION}_${CODEBUILD_BUILD_NUMBER}_${COMMIT_ID}"
+      - COMMIT_SHORT_HASH=$(printf "%.11s" $COMMIT_ID)
+      - IMAGE_TAG="${REPOSITORY_NAME}_${BRANCH_NAME}_${BASE_VERSION}_${CODEBUILD_BUILD_NUMBER}_${COMMIT_SHORT_HASH}"
       - docker build -t $ECR_REPOSITORY:$IMAGE_TAG .
 
       - echo Pushing the Docker image...
