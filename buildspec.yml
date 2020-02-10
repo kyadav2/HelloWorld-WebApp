@@ -40,6 +40,7 @@ phases:
 
       - echo Pushing the Docker image...
       - docker push $ECR_REPOSITORY:$IMAGE_TAG
+      - docker push $ECR_REPOSITORY:latest
       - echo Done
 artifacts:
   files:
