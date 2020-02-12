@@ -16,9 +16,6 @@ phases:
       - apt-get install apt-transport-https
       - apt-get update
       - apt-get install -y dotnet-sdk-3.1
-
-      - echo Installing sonar scanner tool for code coverage
-      - dotnet tool install --global dotnet-sonarscanner --version 4.8.0
   build:
     commands:
       - echo Build started...
