@@ -26,7 +26,7 @@ phases:
 
       - echo Running unit tests...
       - dotnet add UnitTests package coverlet.msbuild
-      - dotnet test --no-build --logger trx --verbosity:normal /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=json /p:threshold=80
+      - dotnet test --no-build --logger trx --verbosity:normal /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=opencover /p:threshold=80
 
       - echo Building the Docker image...
       - cd Host
