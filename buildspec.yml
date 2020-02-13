@@ -25,8 +25,10 @@ phases:
       - dotnet build
 
       - echo Running unit tests...
-      - dotnet add UnitTests package coverlet.msbuild
-      - dotnet test --no-build --logger trx --verbosity:normal /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=opencover /p:threshold=80
+#      - dotnet add UnitTests package coverlet.msbuild
+#      - dotnet test --no-build --logger trx --verbosity:normal /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=opencover /p:threshold=80
+      - dotnet add package JUnitTestLogger --version 1.1.0
+      - dotnet test --no-build --logger "junit;LogFilePath=TestResults/TestResults.xml" --verbosity:normal
 
       - echo Building the Docker image...
       - cd Host
@@ -43,7 +45,6 @@ reports: #New
   TestReports: # CodeBuild will create a report group called "SurefireReports".
     files: #Store all of the files
       - ./src/UnitTests/TestResults/*
-#    base-directory: 'target/surefire-reports' # Location of the reports 
 artifacts:
   files:
     - ./src/UnitTests/TestResults/*
