@@ -22,7 +22,8 @@ phases:
       - cd src
       - chmod +x ./Host/nuget-setup.sh
       - ./Host/nuget-setup.sh
-      - dotnet build
+      - dotnet restore 
+      - dotnet build --no-restore
 
       - echo Running unit tests...
 #      - dotnet add UnitTests package coverlet.msbuild
