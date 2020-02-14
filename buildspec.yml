@@ -16,6 +16,9 @@ phases:
       - apt-get install apt-transport-https
       - apt-get update
       - apt-get install -y dotnet-sdk-3.1
+      
+      - echo Installing Sonar Scanner..
+      - dotnet tool install --global dotnet-sonarscanner --version 4.8.0
   build:
     commands:
       - echo Build started...
@@ -28,8 +31,11 @@ phases:
       - dotnet build
 
       - echo Running unit tests...
-#      - dotnet test --no-build --logger trx --verbosity:normal /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=opencover /p:threshold=80
-      - dotnet test --no-build --logger "junit;LogFilePath=TestResults/TestResults.xml" --verbosity:normal /p:threshold=80
+      - dotnet test --no-build --logger trx --verbosity:normal /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=opencover /p:threshold=80
+#      - dotnet test --no-build --logger "junit;LogFilePath=TestResults/TestResults.xml" --verbosity:normal /p:threshold=80
+      - dotnet sonarscanner begin /k:"$PROJECTKEY" /d:sonar.host.url=https://sonarcloud.io /d:sonar.cs.opencover.reportsPaths="./Host/UnitTests/TestResults/coverage.opencover.xml" /d:sonar.login="$TOKEN" /d:sonar.scm.disabled=true
+      - dotnet build --no-restore
+      - dotnet sonarscanner end /d:sonar.login="$TOKEN"
 
       - echo Building the Docker image...
       - cd Host
