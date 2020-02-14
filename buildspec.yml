@@ -22,18 +22,17 @@ phases:
       - cd src
       - chmod +x ./Host/nuget-setup.sh
       - ./Host/nuget-setup.sh
+#      - dotnet add UnitTests package coverlet.msbuild
+      - dotnet add UnitTests package JUnitTestLogger --version 1.1.0
+      - dotnet restore       
       - dotnet build
 
       - echo Running unit tests...
-#      - dotnet add UnitTests package coverlet.msbuild
 #      - dotnet test --no-build --logger trx --verbosity:normal /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=opencover /p:threshold=80
-      - cd UnitTests
-      - dotnet add package JUnitTestLogger --version 1.1.0
-      - dotnet restore 
-      - dotnet test --logger "junit;LogFilePath=TestResults/TestResults.xml" --verbosity:normal
+      - dotnet test --no-build --logger "junit;LogFilePath=TestResults/TestResults.xml" --verbosity:normal /p:threshold=80
 
       - echo Building the Docker image...
-      - cd ../Host
+      - cd Host
       - ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPOSITORY_NAME
       - COMMIT_SHORT_HASH=$(printf "%.11s" $COMMIT_ID)
       - IMAGE_TAG="${REPOSITORY_NAME}_${BRANCH_NAME}_${BASE_VERSION}_${CODEBUILD_BUILD_NUMBER}_${COMMIT_SHORT_HASH}"
