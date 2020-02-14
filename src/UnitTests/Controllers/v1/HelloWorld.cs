@@ -23,5 +23,11 @@ namespace PF.PfCoreHelloWorld.UnitTests.Controllers.v1
             response.StatusCode.Should().Be(StatusCodes.Status200OK);
             response.Value.Should().Be("Hello World 123!");
         }
+        
+        [TestMethod]
+        public void ShouldSucceed()
+        {
+            true.Should().Be(true);
+        }
     }
 }
