@@ -25,14 +25,14 @@ phases:
       - cd src
       - chmod +x ./Host/nuget-setup.sh
       - ./Host/nuget-setup.sh
-#      - dotnet add UnitTests package coverlet.msbuild
+      - dotnet add UnitTests package coverlet.msbuild
       - dotnet add UnitTests package JUnitTestLogger --version 1.1.0
       - dotnet restore       
       - dotnet build
 
       - echo Running unit tests...
-      - dotnet test --no-build --logger trx --verbosity:normal /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=opencover /p:threshold=80
-#      - dotnet test --no-build --logger "junit;LogFilePath=TestResults/TestResults.xml" --verbosity:normal /p:threshold=80
+#      - dotnet test --no-build --logger trx --verbosity:normal /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=opencover /p:threshold=80
+      - dotnet test --no-build --logger "junit;LogFilePath=TestResults/TestResults.xml" --verbosity:normal /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=opencover /p:threshold=80
       - dotnet sonarscanner begin /k:$PROJECTKEY /d:sonar.host.url=https://sonarcloud.io /d:sonar.cs.opencover.reportsPaths="TestResults/coverage.opencover.xml" /d:sonar.login=$TOKEN /d:sonar.scm.disabled=true /o:$ORGANIZATION
       - dotnet build --no-restore
       - dotnet sonarscanner end /d:sonar.login=${TOKEN}
