@@ -21,16 +21,16 @@ namespace PF.PfCoreHelloWorld.UnitTests.Controllers.v1
             result.Count.Should().Be(testProducts.Count);
         }
 
-        [TestMethod]
-        public void ShouldReturnCorrectProduct()
-        {
-            var testProducts = GetTestProducts();
-            var controller = new ProductController(testProducts);
+        //[TestMethod]
+        //public void ShouldReturnCorrectProduct()
+        //{
+        //    var testProducts = GetTestProducts();
+        //    var controller = new ProductController(testProducts);
 
-            var result = controller.GetProduct(4) as ActionResult<Product>;
-            result.Should().NotBeNull();
-            testProducts[3].Name.Should().Be(((Product)((OkObjectResult)result.Result).Value).Name);
-        }
+        //    var result = controller.GetProduct(4) as ActionResult<Product>;
+        //    result.Should().NotBeNull();
+        //    testProducts[3].Name.Should().Be(((Product)((OkObjectResult)result.Result).Value).Name);
+        //}
 
         [TestMethod]
         public void ShouldNotFindProduct()
