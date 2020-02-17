@@ -27,6 +27,7 @@ phases:
       - ./Host/nuget-setup.sh
       - dotnet add UnitTests package coverlet.msbuild
       - dotnet add UnitTests package JUnitTestLogger --version 1.1.0
+      - dotnet add package Codecov --version 1.10.0
       - dotnet restore       
       - dotnet build
 
@@ -37,6 +38,9 @@ phases:
       - dotnet build --no-restore
       - dotnet sonarscanner end /d:sonar.login=${TOKEN}
       - mv UnitTests/TestResults/coverage.opencover.xml UnitTests/TestResults/coverage.opencoverxml
+      - curl -s https://codecov.io/bash > codecov
+      - chmod +x codecov
+      - ./codecov -f "MyProject_coverage.xml" -t $CODECOV_TOKEN
 
       - echo Building the Docker image...
       - cd Host
