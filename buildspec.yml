@@ -27,7 +27,7 @@ phases:
       - ./Host/nuget-setup.sh
       - dotnet add UnitTests package coverlet.msbuild
       - dotnet add UnitTests package JUnitTestLogger --version 1.1.0
-      - dotnet add package Codecov --version 1.10.0
+      - dotnet add UnitTests package Codecov --version 1.10.0
       - dotnet restore       
       - dotnet build
 
