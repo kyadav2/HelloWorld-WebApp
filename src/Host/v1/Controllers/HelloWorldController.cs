@@ -9,7 +9,7 @@ namespace PF.PfCoreHelloWorld.v1.Controllers
         [HttpGet]
         public ActionResult<string> Get()
         {
-            return Ok("Hello World 123!");
+            return Ok("Hello World!");
         }
     }
 }
