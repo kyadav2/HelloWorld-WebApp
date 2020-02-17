@@ -37,10 +37,10 @@ phases:
       - dotnet sonarscanner begin /k:$PROJECTKEY /d:sonar.host.url=https://sonarcloud.io /d:sonar.cs.opencover.reportsPaths="UnitTests/TestResults/coverage.opencover.xml" /d:sonar.login=$TOKEN /d:sonar.scm.disabled=true /o:$ORGANIZATION /d:sonar.coverage.exclusions=”HelloWorld.cs”
       - dotnet build --no-restore
       - dotnet sonarscanner end /d:sonar.login=${TOKEN}
-      - mv UnitTests/TestResults/coverage.opencover.xml UnitTests/TestResults/coverage.opencoverxml
       - curl -s https://codecov.io/bash > codecov
       - chmod +x codecov
-      - ./codecov -f "MyProject_coverage.xml" -t $CODECOV_TOKEN
+      - ./codecov -f "UnitTests/TestResults/coverage.opencover.xml" -t $CODECOV_TOKEN
+      - mv UnitTests/TestResults/coverage.opencover.xml UnitTests/TestResults/coverage.opencoverxml
 
       - echo Building the Docker image...
       - cd Host
