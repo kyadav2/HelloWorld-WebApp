@@ -28,6 +28,7 @@ phases:
       - dotnet add UnitTests package coverlet.msbuild
       - dotnet add UnitTests package JUnitTestLogger --version 1.1.0
       - dotnet add UnitTests package Codecov --version 1.10.0
+      - dotnet add UnitTests package JetBrains.dotCover.DotNetCliTool --version 2019.3.2
       - dotnet restore       
       - dotnet build
 
@@ -42,7 +43,6 @@ phases:
       - ./codecov -f "UnitTests/TestResults/coverage.opencover.xml" -t $CODECOV_TOKEN
       - dotnet tool install dotnet-reportgenerator-globaltool --tool-path .
       - ./reportgenerator "-reports:UnitTests/TestResults/coverage.opencover.xml" "-targetdir:UnitTests/TestResults" -reporttypes:HTML;
-      - dotnet add package JetBrains.dotCover.DotNetCliTool --version 2019.3.2
       - dotCover.sh dotnet --output=UnitTests/TestResults/myRep.html --reportType=HTML -- test
       - mv UnitTests/TestResults/coverage.opencover.xml UnitTests/TestResults/coverage.opencoverxml
 
