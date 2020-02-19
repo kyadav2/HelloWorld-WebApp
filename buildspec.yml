@@ -19,6 +19,7 @@ phases:
       
       - echo Installing Sonar Scanner..
       - dotnet tool install --global dotnet-sonarscanner --version 4.8.0
+      - dotnet tool install --global dotnet-reportgenerator-globaltool
   build:
     commands:
       - echo Build started...
@@ -40,6 +41,7 @@ phases:
       - curl -s https://codecov.io/bash > codecov
       - chmod +x codecov
       - ./codecov -f "UnitTests/TestResults/coverage.opencover.xml" -t $CODECOV_TOKEN
+      - reportgenerator "-reports:UnitTests/TestResults/coverage.opencover.xml" "-targetdir:UnitTests/TestResults/CoverageReport_${CODEBUILD_BUILD_NUMBER}" -reporttypes:HTML;
       - mv UnitTests/TestResults/coverage.opencover.xml UnitTests/TestResults/coverage.opencoverxml
 
       - echo Building the Docker image...
