@@ -42,6 +42,8 @@ phases:
       - ./codecov -f "UnitTests/TestResults/coverage.opencover.xml" -t $CODECOV_TOKEN
       - dotnet tool install dotnet-reportgenerator-globaltool --tool-path .
       - ./reportgenerator "-reports:UnitTests/TestResults/coverage.opencover.xml" "-targetdir:UnitTests/TestResults" -reporttypes:HTML;
+      - dotnet add package JetBrains.dotCover.DotNetCliTool --version 2019.3.2
+      - dotCover.sh dotnet --output=UnitTests/TestResults/myRep.html --reportType=HTML -- test
       - mv UnitTests/TestResults/coverage.opencover.xml UnitTests/TestResults/coverage.opencoverxml
 
       - echo Building the Docker image...
