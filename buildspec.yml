@@ -43,7 +43,8 @@ phases:
       - ./codecov -f "UnitTests/TestResults/coverage.opencover.xml" -t $CODECOV_TOKEN
       - dotnet tool install dotnet-reportgenerator-globaltool --tool-path .
       - ./reportgenerator "-reports:UnitTests/TestResults/coverage.opencover.xml" "-targetdir:UnitTests/TestResults" -reporttypes:HTML;
-      - dotCover.sh dotnet --output=UnitTests/TestResults/myRep.html --reportType=HTML -- test
+#      - dotCover.sh dotnet --output=UnitTests/TestResults/myRep.html --reportType=HTML -- test
+      - dotnet dotcover test --dcOutput=UnitTests/TestResults/myRep.html
       - mv UnitTests/TestResults/coverage.opencover.xml UnitTests/TestResults/coverage.opencoverxml
 
       - echo Building the Docker image...
