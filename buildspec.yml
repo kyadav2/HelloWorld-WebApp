@@ -42,9 +42,8 @@ phases:
       - chmod +x codecov
       - ./codecov -f "UnitTests/TestResults/coverage.opencover.xml" -t $CODECOV_TOKEN
       - dotnet tool install dotnet-reportgenerator-globaltool --tool-path .
-      - ./reportgenerator "-reports:UnitTests/TestResults/coverage.opencover.xml" "-targetdir:UnitTests/TestResults" -reporttypes:HTML;
-      - ~/.nuget/packages/jetbrains.dotcover.dotnetclitool/2019.3.2/tools/dotCover.sh dotnet --output=UnitTests/TestResults/myRep.html --reportType=HTML -- test
-#      - dotnet dotcover test --dcOutput=UnitTests/TestResults/myRep.html
+      - ./reportgenerator "-reports:UnitTests/TestResults/coverage.opencover.xml" "-targetdir:UnitTests/TestResults/CoverageReport_Coverlet_${CODEBUILD_BUILD_NUMBER}" -reporttypes:HTML;
+      - ~/.nuget/packages/jetbrains.dotcover.dotnetclitool/2019.3.2/tools/dotCover.sh dotnet --output=UnitTests/TestResults/CoverageReport_dotCover_${CODEBUILD_BUILD_NUMBER}/myRep.html --reportType=HTML -- test
       - mv UnitTests/TestResults/coverage.opencover.xml UnitTests/TestResults/coverage.opencoverxml
 
       - echo Building the Docker image...
@@ -64,4 +63,4 @@ reports: #New
       - ./src/UnitTests/TestResults/*
 artifacts:
   files:
-    - ./src/UnitTests/TestResults/*
+    - ./src/UnitTests/TestResults/**/*
