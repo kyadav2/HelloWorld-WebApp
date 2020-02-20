@@ -4,7 +4,7 @@ env:
     BASE_VERSION: "0.1.0"
     DOTCOVER_VERSION: "2019.3.2"
     JUNITTESTLOGGER_VERSION: "1.1.0"
-    DOTCOVER_CONSOLE_RUNNER_SHELL: "~/.nuget/packages/jetbrains.dotcover.dotnetclitool/$DOTCOVER_VERSION/tools/dotCover.sh"
+    DOTCOVER_CONSOLE_RUNNER_SHELL: "~/.nuget/packages/jetbrains.dotcover.dotnetclitool/${DOTCOVER_VERSION}/tools/dotCover.sh"
 phases:
   pre_build:
     commands:
@@ -19,9 +19,6 @@ phases:
       - apt-get install apt-transport-https
       - apt-get update
       - apt-get install -y dotnet-sdk-3.1
-
-      - echo Installing code coverage report generator...
-      - dotnet tool install -g dotnet-reportgenerator-globaltool
   build:
     commands:
       - echo Build started...
@@ -53,8 +50,8 @@ phases:
       - echo Done
 reports:
   TestReports:
-    files:
+    files: # publisihing test results
       - ./src/UnitTests/TestResults/TestResults.xml
 artifacts:
-  files:
+  files: # publishing coverage report to S3
     - ./src/UnitTests/TestResults/**/*
