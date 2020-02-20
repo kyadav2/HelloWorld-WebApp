@@ -28,7 +28,7 @@ phases:
       - chmod +x ./Host/nuget-setup.sh
       - ./Host/nuget-setup.sh
       - dotnet add UnitTests package JUnitTestLogger --version $JUNITTESTLOGGER_VERSION
-      - dotnet add UnitTests package JetBrains.dotCover.DotNetCliTool --version $DOTCOVER_VERSION2
+      - dotnet add UnitTests package JetBrains.dotCover.DotNetCliTool --version $DOTCOVER_VERSION
       - dotnet build
 
       - echo Running unit tests...
