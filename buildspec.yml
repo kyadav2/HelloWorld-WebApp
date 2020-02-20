@@ -2,6 +2,8 @@ version: 0.2
 env:
   variables:
     BASE_VERSION: "0.1.0"
+    DOTCOVER_VERSION: "2019.3.2"
+    JUNITTESTLOGGER_VERSION: "1.1.0"
 phases:
   pre_build:
     commands:
@@ -16,42 +18,30 @@ phases:
       - apt-get install apt-transport-https
       - apt-get update
       - apt-get install -y dotnet-sdk-3.1
-      
-      - echo Installing Sonar Scanner..
-      - dotnet tool install --global dotnet-sonarscanner --version 4.8.0
+
+      - echo Installing code coverage report generator...
+      - dotnet tool install dotnet-reportgenerator-globaltool
   build:
     commands:
       - echo Build started...
       - cd src
       - chmod +x ./Host/nuget-setup.sh
       - ./Host/nuget-setup.sh
-      - dotnet add UnitTests package coverlet.msbuild
-      - dotnet add UnitTests package JUnitTestLogger --version 1.1.0
-      - dotnet add UnitTests package Codecov --version 1.10.0
-      - dotnet add UnitTests package JetBrains.dotCover.DotNetCliTool --version 2019.3.2
-      - dotnet restore       
+      - dotnet add UnitTests package JUnitTestLogger --version $JUNITTESTLOGGER_VERSION
+      - dotnet add UnitTests package JetBrains.dotCover.DotNetCliTool --version $DOTCOVER_VERSION2
       - dotnet build
 
       - echo Running unit tests...
-#      - dotnet test --no-build --logger trx --verbosity:normal /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=opencover /p:threshold=80
-      - dotnet test --no-build --logger "junit;LogFilePath=TestResults/TestResults.xml" --verbosity:normal /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=opencover /p:threshold=80
-      - dotnet sonarscanner begin /k:$PROJECTKEY /d:sonar.host.url=https://sonarcloud.io /d:sonar.cs.opencover.reportsPaths="UnitTests/TestResults/coverage.opencover.xml" /d:sonar.login=$TOKEN /d:sonar.scm.disabled=true /o:$ORGANIZATION /d:sonar.coverage.exclusions=”HelloWorld.cs”
-      - dotnet build --no-restore
-      - dotnet sonarscanner end /d:sonar.login=${TOKEN}
-      - curl -s https://codecov.io/bash > codecov
-      - chmod +x codecov
-      - ./codecov -f "UnitTests/TestResults/coverage.opencover.xml" -t $CODECOV_TOKEN
-      - dotnet tool install dotnet-reportgenerator-globaltool --tool-path .
-      - ./reportgenerator "-reports:UnitTests/TestResults/coverage.opencover.xml" "-targetdir:UnitTests/TestResults/CoverageReport_Coverlet_${CODEBUILD_BUILD_NUMBER}" -reporttypes:HTML;
-      - ~/.nuget/packages/jetbrains.dotcover.dotnetclitool/2019.3.2/tools/dotCover.sh dotnet --output=UnitTests/TestResults/CoverageReport_dotCover_${CODEBUILD_BUILD_NUMBER}/myRep.html --reportType=HTML -- test
-      - mv UnitTests/TestResults/coverage.opencover.xml UnitTests/TestResults/coverage.opencoverxml
+      - dotnet test --no-build --logger "junit;LogFilePath=TestResults/TestResults.xml" --verbosity:normal
+
+      - echo Generating coverage report...
+      - ~/.nuget/packages/jetbrains.dotcover.dotnetclitool/$DOTCOVER_VERSION/tools/dotCover.sh dotnet --output=UnitTests/TestResults/CoverageReport_${CODEBUILD_BUILD_NUMBER}/report.html --reportType=HTML -- test
 
       - echo Building the Docker image...
-      - cd Host
       - ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPOSITORY_NAME
       - COMMIT_SHORT_HASH=$(printf "%.11s" $COMMIT_ID)
       - IMAGE_TAG="${REPOSITORY_NAME}_${BRANCH_NAME}_${BASE_VERSION}_${CODEBUILD_BUILD_NUMBER}_${COMMIT_SHORT_HASH}"
-      - docker build -t $ECR_REPOSITORY:$IMAGE_TAG -t $ECR_REPOSITORY:latest .
+      - docker build -f ./Host/Dockerfile -t $ECR_REPOSITORY:$IMAGE_TAG -t $ECR_REPOSITORY:latest .
 
       - echo Pushing the Docker image...
       - docker push $ECR_REPOSITORY:$IMAGE_TAG
@@ -60,7 +50,7 @@ phases:
 reports: #New
   TestReports: # CodeBuild will create a report group called "SurefireReports".
     files: #Store all of the files
-      - ./src/UnitTests/TestResults/*
+      - ./src/UnitTests/TestResults/TestResults.xml
 artifacts:
   files:
     - ./src/UnitTests/TestResults/**/*
