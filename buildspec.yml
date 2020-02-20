@@ -35,7 +35,8 @@ phases:
       - echo Generating coverage report...
       - ~/.nuget/packages/jetbrains.dotcover.dotnetclitool/$DOTCOVER_VERSION/tools/dotCover.sh dotnet \
             --output=UnitTests/TestResults/CoverageReport_${REPOSITORY_NAME}_${BASE_VERSION}_${CODEBUILD_BUILD_NUMBER}_${COMMIT_SHORT_HASH}/report.html \
-            --reportType=HTML -- test
+            --reportType=HTML \
+            -- test
 
       - echo Building the Docker image...
       - cd Host
