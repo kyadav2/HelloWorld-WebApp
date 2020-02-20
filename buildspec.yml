@@ -37,7 +37,7 @@ phases:
       - dotnet test --no-build --logger "junit;LogFilePath=TestResults/TestResults.xml" --verbosity:normal
 
       - echo Generating coverage report...
-      - DOTCOVER_CONSOLE_RUNNER_SHELL dotnet \
+      - $DOTCOVER_CONSOLE_RUNNER_SHELL dotnet \
             --output=UnitTests/TestResults/CoverageReport_${REPOSITORY_NAME}_${BASE_VERSION}_${CODEBUILD_BUILD_NUMBER}_${COMMIT_SHORT_HASH}/report.html \
             --reportType=HTML -- test
 
