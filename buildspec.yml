@@ -24,6 +24,7 @@ phases:
   build:
     commands:
       - echo Build started...
+      - COMMIT_SHORT_HASH=$(printf "%.11s" $COMMIT_ID)
       - cd src
       - chmod +x ./Host/nuget-setup.sh
       - ./Host/nuget-setup.sh
@@ -35,12 +36,11 @@ phases:
       - dotnet test --no-build --logger "junit;LogFilePath=TestResults/TestResults.xml" --verbosity:normal
 
       - echo Generating coverage report...
-      - ~/.nuget/packages/jetbrains.dotcover.dotnetclitool/$DOTCOVER_VERSION/tools/dotCover.sh dotnet --output=UnitTests/TestResults/CoverageReport_${CODEBUILD_BUILD_NUMBER}/report.html --reportType=HTML -- test
+      - ~/.nuget/packages/jetbrains.dotcover.dotnetclitool/$DOTCOVER_VERSION/tools/dotCover.sh dotnet --output=UnitTests/TestResults/CoverageReport_${REPOSITORY_NAME}_${BASE_VERSION}_${CODEBUILD_BUILD_NUMBER}_${COMMIT_SHORT_HASH}/report.html --reportType=HTML -- test
 
       - echo Building the Docker image...
       - cd Host
       - ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPOSITORY_NAME
-      - COMMIT_SHORT_HASH=$(printf "%.11s" $COMMIT_ID)
       - IMAGE_TAG="${REPOSITORY_NAME}_${BRANCH_NAME}_${BASE_VERSION}_${CODEBUILD_BUILD_NUMBER}_${COMMIT_SHORT_HASH}"
       - docker build -t $ECR_REPOSITORY:$IMAGE_TAG -t $ECR_REPOSITORY:latest .
 
