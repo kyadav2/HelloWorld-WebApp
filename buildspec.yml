@@ -4,6 +4,7 @@ env:
     BASE_VERSION: "0.1.0"
     DOTCOVER_VERSION: "2019.3.2"
     JUNITTESTLOGGER_VERSION: "1.1.0"
+    DOTCOVER_CONSOLE_RUNNER_SHELL: "~/.nuget/packages/jetbrains.dotcover.dotnetclitool/$DOTCOVER_VERSION/tools/dotCover.sh"
 phases:
   pre_build:
     commands:
@@ -36,7 +37,9 @@ phases:
       - dotnet test --no-build --logger "junit;LogFilePath=TestResults/TestResults.xml" --verbosity:normal
 
       - echo Generating coverage report...
-      - ~/.nuget/packages/jetbrains.dotcover.dotnetclitool/$DOTCOVER_VERSION/tools/dotCover.sh dotnet --output=UnitTests/TestResults/CoverageReport_${REPOSITORY_NAME}_${BASE_VERSION}_${CODEBUILD_BUILD_NUMBER}_${COMMIT_SHORT_HASH}/report.html --reportType=HTML -- test
+      - DOTCOVER_CONSOLE_RUNNER_SHELL dotnet \
+            --output=UnitTests/TestResults/CoverageReport_${REPOSITORY_NAME}_${BASE_VERSION}_${CODEBUILD_BUILD_NUMBER}_${COMMIT_SHORT_HASH}/report.html \
+            --reportType=HTML -- test
 
       - echo Building the Docker image...
       - cd Host
